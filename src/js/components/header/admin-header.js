@@ -5,7 +5,6 @@
  */
 
 
-/** @jsx React.DOM */
 var React = require('react');
 var Router = require('react-router');
 var Route = Router.Route;
@@ -60,6 +59,7 @@ var AdminHeader = React.createClass({
           <li>{loginOrOut}</li>
           <li><Link to="manage">受理申请</Link></li>
           <li><Link to="editclass">编辑教室</Link></li>
+          <li><Link to="usermanagement">用户管理</Link></li>
         </ul>
         <br/>
       </div>

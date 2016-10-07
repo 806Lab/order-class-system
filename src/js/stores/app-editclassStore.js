@@ -7,7 +7,8 @@
 var AppDispatcher = require('../dispatchers/app-dispatcher');
 var AppConstants = require('../constants/app-constants');
 var EventEmitter = require('events').EventEmitter;
-var React = require('react/addons');
+var React = require('react');
+var update = require('react-addons-update');
 
 var CHANGE_EVENT = "change";
 
@@ -18,7 +19,7 @@ var _arrangement = [];
 
 
 
-var AppStore = React.addons.update(EventEmitter.prototype, {$merge: {
+var AppStore = update(EventEmitter.prototype, {$merge: {
   emitChange:function(){
     this.emit(CHANGE_EVENT);
   },

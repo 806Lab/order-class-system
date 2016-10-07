@@ -24,7 +24,7 @@ var neworderAction = {
                 location.pathname = "/#";
             } else if (data.code == 0) {
                 AppDispatcher.handleViewAction({'actionType': AppConstants.GET_DATE,'data':data.data})
-            };
+            }
         })
     },
     /**
@@ -68,7 +68,7 @@ var neworderAction = {
                 DashAction.getOrder(0);
             } else {
                 swal({title: data.msg,   text: "", confirmButtonColor: "#ff0000",   });
-            };   
+            } 
         })
     }
 

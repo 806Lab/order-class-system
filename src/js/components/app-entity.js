@@ -1,4 +1,3 @@
-/** @jsx React.DOM */
 var React = require('react');
 var EntityActions = require('../actions/app-entity');
 var EntityStore = require('../stores/app-entityStore');

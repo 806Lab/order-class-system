@@ -93,10 +93,10 @@ var Api = {
         );
     },
     ajaxPost: function(url,data,cb) {
-    $.ajax({
-            url: 'http://localhost:90'+url,
-            dataType: 'JSONP',
-            jsonp: 'callback',
+        $.ajax({
+            url: url,
+            dataType: 'JSON',
+            // jsonp: 'callback',
             /*url: url,
             type: 'POST',
             dataType: 'JSON',*/

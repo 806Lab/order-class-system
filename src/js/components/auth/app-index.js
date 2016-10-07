@@ -5,11 +5,9 @@
  */
 
 
-/** @jsx React.DOM */
 var React = require('react');
 var Router = require('react-router');
 var AuthStore = require('../../stores/app-authStore.js');
-var FbOauthActions = require('../../actions/app-fboauth');
 
 var AMZ = require('amazeui-react');
 
@@ -30,9 +28,6 @@ var Index = React.createClass({
   },
   componentWillUnmount: function() {
     AuthStore.removeChangeListener(this._onChange);
-  },
-  handleFBLogin: function (event) {
-    FbOauthActions.startOauth();
   },
   _onChange: function() {
     if(AuthStore.getState().loggedIn){

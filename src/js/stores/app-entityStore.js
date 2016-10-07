@@ -1,8 +1,8 @@
 var AppDispatcher = require('../dispatchers/app-dispatcher');
 var AppConstants = require('../constants/app-constants');
 var EventEmitter = require('events').EventEmitter;
-var React = require('react/addons');
-
+var React = require('react');
+var update = require('react-addons-update');
 var CHANGE_EVENT = "change";
 
 
@@ -18,7 +18,7 @@ function _persistEntityData(response) {
 }
 
 
-var EntityStore = React.addons.update(EventEmitter.prototype, {$merge: {
+var EntityStore = update(EventEmitter.prototype, {$merge: {
   emitChange:function(){
     this.emit(CHANGE_EVENT);
   },

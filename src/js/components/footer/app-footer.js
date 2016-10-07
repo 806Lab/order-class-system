@@ -5,7 +5,6 @@
  */
 
 
-/** @jsx React.DOM */
 var React = require('react');
 
 var AMZ = require('amazeui-react');

@@ -6,7 +6,6 @@
 
 
 
-/** @jsx React.DOM */
 var React = require('react');
 var Router = require('react-router');
 var AuthStore = require('../../stores/app-authStore.js');
@@ -14,12 +13,12 @@ var AuthAction = require('../../actions/app-auth.js');
 
 var AMZ = require('amazeui-react');
 
-const GridList = require('material-ui/lib/grid-list/grid-list');
-const GridTile = require('material-ui/lib/grid-list/grid-tile');
-const TextField = require('material-ui/lib/text-field');
-const RaisedButton = require('material-ui/lib/raised-button');
+const GridList = require('material-ui/GridList/GridList');
+const GridTile = require('material-ui/GridList/GridTile');
+const TextField = require('material-ui/TextField');
+const RaisedButton = require('material-ui/RaisedButton');
 
-var person = AuthStore.authGetPerson()
+var person = AuthStore.authGetPerson();
 
 var Login = React.createClass({
   contextTypes: {
@@ -44,13 +43,13 @@ var Login = React.createClass({
           this.context.router.replaceWith('/dashboard');
         } else if (person == 1) {
           this.context.router.replaceWith('/manage');
-        };
+        }
         //Login.attemptedTransition.retry();
       } else if (person == 0){
           this.context.router.replaceWith('/dashboard');
         } else if (person == 1) {
           this.context.router.replaceWith('/manage');
-        };
+        }
     }
   },
   componentWillUnmount: function() {
@@ -58,8 +57,8 @@ var Login = React.createClass({
   },
   handleSubmit: function (event) {
     event.preventDefault();
-    var email = this.refs.email.getDOMNode().childNodes[0].value;
-    var pass = this.refs.pass.getDOMNode().childNodes[0].value;
+    var email = this.refs.email.getValue();
+    var pass = this.refs.pass.getValue();
     AuthAction.startAuth(email, pass);
   },
   _onChange: function() {

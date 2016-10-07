@@ -5,14 +5,13 @@
  */
 
 
-/** @jsx React.DOM */
 var React = require('react');
 var AuthStore = require('../stores/app-authStore.js');
 var AppActions = require('../actions/app-actions.js');
 var Header = require('./header/app-header');
 var Footer = require('./footer/app-footer');
 var AdminHeader = require('./header/admin-header');
-const RaisedButton = require('material-ui/lib/raised-button');
+const RaisedButton = require('material-ui/RaisedButton/RaisedButton');
 
 
 var Template = 

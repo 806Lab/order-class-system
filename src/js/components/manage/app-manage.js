@@ -5,7 +5,6 @@
  */
 
 
-/** @jsx React.DOM */
 var React = require('react');
 var Login = require('../auth/app-login');
 var ManageStore = require('../../stores/app-manageStore.js');
@@ -83,7 +82,7 @@ var About = React.createClass({
           }, 200); 
         });
         
-      };
+      }
       function handleRefuse(e,i) {
         var feed = window.prompt("拒绝理由（可不填)");
         var data = {
@@ -109,7 +108,7 @@ var About = React.createClass({
       };
       function handleShowFeedback(feedback) {
           swal(feedback || '未填写反馈');    
-      };
+      }
       var status = '',
             textColor = '';
 

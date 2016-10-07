@@ -5,7 +5,6 @@
  */
 
 
-/** @jsx React.DOM */
 var React = require('react');
 var Login = require('../auth/app-login');
 var DashAction = require('../../actions/dash-action.js');
