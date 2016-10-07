@@ -5,13 +5,14 @@
  */
 
 var React = require('react');
+var ReactDOM = require('react-dom');
 var Router = require('react-router');
 var Route = Router.Route;
 var RouteHandler = Router.RouteHandler;
 var Link = Router.Link;
 
 
-APP = require('./components/app').APP;
+var APP = require('./components/app').APP;
 
 var Logout = require('./components/auth/app-logout');
 var Login = require('./components/auth/app-login');
@@ -22,7 +23,7 @@ var Dashboard = require('./components/dashboard/app-dashboard');
 var Manage = require('./components/manage/app-manage');
 var Editclass = require('./components/manage/app-editclass');
 var Queryclass = require('./components/manage/app-queryclass');
-
+var UserManagement = require('./components/manage/app-usermanagement');
 
 var routes = (
   <Route handler={APP}>
@@ -34,9 +35,10 @@ var routes = (
     <Route name="manage" handler={Manage}/>
     <Route name="editclass" handler={Editclass}/>
     <Route name="queryclass" handler={Queryclass}/>
+    <Route name="usermanagement" handler={UserManagement}/>
   </Route>
 );
 
 Router.run(routes, function (Handler) {
-  React.render(<Handler/>, document.getElementById('myapp'));
+    ReactDOM.render(<Handler/>, document.getElementById('myapp'));
 });
