@@ -16,6 +16,12 @@ class Usermanage_Model extends CI_Model{
         $query = $this->db->get(self::TAB_USER);
         return $query->result();
     }
+    
+    function get_user_count()
+    {
+        $query = $this->db->get(self::TAB_USER);
+        return $query->num_rows();
+    }
 
     function add_user()
     {

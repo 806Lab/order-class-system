@@ -15,10 +15,7 @@ gulp.task('build', function () {
 });
 
 gulp.task('deploy', function () {
-	return browserify('./src/js/main.js')
-		.transform('babelify', {presets: ['es2015', 'react']})
-		.bundle()
-		.pipe(source('main.min.js'))
+	gulp.src('./backend/js/main.min.js')
 		.pipe(uglify())
 		.pipe(gulp.dest('./backend/js/'))
 });
@@ -43,7 +40,7 @@ gulp
   // build the application
   // .task('default', ['browserify','copy', 'connect', 'open'])
   .task('default', ['build', 'copy'])
-  
+
   // watch for source changes
   .task('watch', ['default'], function(){
     // livereload.listen();

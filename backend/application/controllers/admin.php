@@ -142,8 +142,11 @@ class Admin extends CI_Controller {
      */
     function get_user_list(){
         $offset = $this->input->get_post("offset", TRUE);
-        $limit = 30;
-        $data = $this->usermanage_model->get_user_list($offset, $limit);
+        $limit = 10;
+        $data = [
+            "users" => $this->usermanage_model->get_user_list($offset, $limit),
+            "count" => $this->usermanage_model->get_user_count()
+        ];
         $this->response_model->show(0, "", $data);
     }
 

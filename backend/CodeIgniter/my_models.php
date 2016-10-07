@@ -18,7 +18,7 @@
  * @property Admin_Model            $admin_model
  * @property Extern_Model           $extern_model
  * @property XLSX_Model             $xlsx_model
- * @property UsermanageModel        $usermanage_model
+ * @property Usermanage_Model        $usermanage_model
  *
  */
 class my_models

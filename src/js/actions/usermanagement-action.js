@@ -10,7 +10,7 @@ class UserManagementAction {
 				if (data.msg == "你还没有登陆") {
 					location.pathname = "/#";
 				} else if (data.code == 0) {
-					f(data.data);
+					f(data.data.users, data.data.count);
 				}else {
 					swal({title: data.msg,   text: "", confirmButtonColor: "#ff0000"});
 				}

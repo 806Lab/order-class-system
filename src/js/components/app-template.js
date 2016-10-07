@@ -41,7 +41,7 @@ var Template =
                     <Header />
                     {this.props.children}
                    <br/><br/>
-                    <Footer />
+                    <Footer marginTop={"200px"} />
               </div>
               )
 
@@ -50,8 +50,7 @@ var Template =
               <div className="container">
                     <AdminHeader />
                     {this.props.children}
-                   <br/><br/>
-                   <Footer />
+                   <Footer marginTop={"0px"} />
               </div>
               )
           } else {
@@ -60,7 +59,7 @@ var Template =
                     <Header />
                     {this.props.children}
                    <br/><br/>
-                    <Footer />
+                    <Footer marginTop={"200px"}/>
               </div>
               )
           }

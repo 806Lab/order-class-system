@@ -28,25 +28,26 @@ var neworderAction = {
         })
     },
     /**
-     * 获取可使用教室
+     * 选定的可使用日期和时间获取可使用教室
+		 * @param  {[Array]} data [可使用时间段]
      * @return {[type]} [description]
      */
-    getClassroom: function() {
-        var data;
+		getValidClassroom: function(data) {
         Api.ajaxPost('/api.php/user/get_classroom',data,function(data){
             if (data.msg == "你还没有登陆") {
                 location.pathname = "/#";
             } else if (data.code == 0) {
                 AppDispatcher.handleViewAction({'actionType': AppConstants.GET_CLASSROOM,'data':data.data})
-            };
+            }
         })
     },
     /**
-     * 根据选定的可使用日期和教室获取可使用时间段
-     * @param  {[Array]} data [可使用时间段]
+     * 获取可使用时间段
+     *
      * @return {[type]}      [description]
      */
-    getValidtime: function(data) {
+    getTime: function() {
+				var data;
         Api.ajaxPost('/api.php/user/get_time',data,function(data){
             if (data.msg == "你还没有登陆") {
                 location.pathname = "/#";

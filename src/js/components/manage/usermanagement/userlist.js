@@ -10,7 +10,6 @@ class UserList extends React.Component{
 		var userList = [];
 		for (var i = 0; i < this.props.data.length; i++){
 			var user = this.props.data[i];
-			console.log(user.id);
 			userList.push(<EditableUser key={user.id} data={user} />);
 		}
 		return <tbody>{userList}</tbody>

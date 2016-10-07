@@ -13,8 +13,8 @@ var CHANGE_EVENT = "change";
 
 
 var _date = [];
-var _classroom = [];
-var _validtime = [];
+var _validClassroom = [];
+var _time = [];
 
 var AppStore = update(EventEmitter.prototype, {$merge: {
   emitChange:function(){
@@ -42,17 +42,17 @@ var AppStore = update(EventEmitter.prototype, {$merge: {
   getDate: function() {
   	return _date;
   },
-  setClassroom: function(classroom) {
-  	_classroom = classroom
+  setValidClassroom: function(validClassroom) {
+		_validClassroom = validClassroom
   },
-  getClassroom: function() {
-  	return _classroom;
+	getValidClassroom: function() {
+  	return _validClassroom;
   },
-  setValidtime: function(validtime) {
-  	_validtime = validtime;
+  setTime: function(time) {
+  	_time = time;
   },
-  getValidtime: function() {
-  	return _validtime;
+  getTime: function() {
+  	return _time;
   },
 
 
@@ -64,10 +64,10 @@ var AppStore = update(EventEmitter.prototype, {$merge: {
       AppStore.setDate(action.data);
       break;
       case AppConstants.GET_CLASSROOM:
-      AppStore.setClassroom(action.data);
+      AppStore.setValidClassroom(action.data);
       break;
       case AppConstants.GET_VALID_TIME:
-      AppStore.setValidtime(action.data);
+      AppStore.setTime(action.data);
       break;
 
     }

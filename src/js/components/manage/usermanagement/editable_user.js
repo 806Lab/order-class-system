@@ -5,11 +5,6 @@ import { Button, Modal } from 'react-bootstrap'
 import React from 'react'
 
 
-let labelStyle = {
-    width: "85px",
-    textAlign: "left"
-};
-
 class EditableUser extends React.Component{
 
 	constructor(){
@@ -42,8 +37,22 @@ class EditableUser extends React.Component{
 		this.setState({isDelete: true});
 	}
 
-	getUserType() {
-		switch (this.props.data.user_type){
+	confirmUpdateModal(){
+		let newData = {
+			username: this.refs.username.value,
+			name: this.refs.name.value,
+			unit_info: this.refs.unit_info.value,
+			mobile_number: this.refs.mobile_number.value,
+			user_type: this.refs.user_type.value,
+		};
+		this.setState({
+			data: newData,
+			showUpdateModal: false
+		});
+	}
+
+	getUserType(user_type) {
+		switch (user_type){
 			case "0": return "本科生";
 			case "1": return "研究生";
 			case "2": return "教师";
@@ -76,11 +85,46 @@ class EditableUser extends React.Component{
 							<Button bsStyle="danger" onClick={this.confirmDeleteModal.bind(this)}>确定</Button>
 						</Modal.Footer>
 					</Modal>
+					<Modal show={this.state.showUpdateModal} onHide={this.closeUpdateModal.bind(this)}>
+						<Modal.Header closeButton>
+							<Modal.Title>修改信息</Modal.Title>
+						</Modal.Header>
+						<Modal.Body>
+							<div className="form-group">
+								<label className="form-label">学号(工号)</label>
+								<input type="text" ref='username' className="form-control" defaultValue={this.state.data.username} />
+							</div>
+							<div className="form-group">
+								<label className="form-label">姓名</label>
+								<input type="text" ref='name' className="form-control" defaultValue={this.state.data.name} />
+							</div>
+							<div className="form-group">
+								<label className="form-label">单位</label>
+								<input type="text" ref='unit_info' className="form-control" defaultValue={this.state.data.unit_info} />
+							</div>
+							<div className="form-group">
+								<label className="form-label">手机号</label>
+								<input type="text" ref='mobile_number' className="form-control" defaultValue={this.state.data.mobile_number} />
+							</div>
+							<div className="form-group">
+								<label className="form-label">用户类型</label>
+								<select ref='user_type' className="form-control" defaultValue={this.state.data.user_type}>
+									<option value="0">本科生</option>
+									<option value="1">研究生</option>
+									<option value="2">教师</option>
+								</select>
+							</div>
+						</Modal.Body>
+						<Modal.Footer>
+							<Button bsStyle="default" onClick={this.closeUpdateModal.bind(this)}>取消</Button>
+							<Button bsStyle="primary" onClick={this.confirmUpdateModal.bind(this)}>确定</Button>
+						</Modal.Footer>
+					</Modal>
 					<td>{this.state.data.username}</td>
 					<td>{this.state.data.name}</td>
 					<td>{this.state.data.unit_info}</td>
 					<td>{this.state.data.mobile_number}</td>
-					<td>{this.getUserType()}</td>
+					<td>{this.getUserType(this.state.data.user_type)}</td>
 					<td>
 						<Button bsStyle="primary" onClick={this.openUpdateModal.bind(this)}>修改</Button>
 						&nbsp;&nbsp;

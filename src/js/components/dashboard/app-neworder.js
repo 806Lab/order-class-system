@@ -19,11 +19,11 @@ var AMZ = require('amazeui-react');
 function getDateFromStore() {
   return NeworderStore.getDate();
 }
-function getClassroomFromStore() {
-  return NeworderStore.getClassroom();
+function getValidClassroomFromStore() {
+  return NeworderStore.getValidClassroom();
 }
-function getValidtimeFromStore() {
-  return NeworderStore.getValidtime();
+function getTimeFromStore() {
+  return NeworderStore.getTime();
 }
 
 var Neworder = React.createClass({
@@ -36,10 +36,10 @@ var Neworder = React.createClass({
   },
   componentWillMount: function() {
     NeworderAction.getDate();
-    NeworderAction.getClassroom();
+    NeworderAction.getTime();
   },
   componentDidMount: function() {
-    this._getValidtime();
+    this._getValidClassRoom();
     NeworderStore.addChangeListener(this._onChange);
   },
   componentWillUnmount: function() {
@@ -48,19 +48,19 @@ var Neworder = React.createClass({
   _onChange: function() {
     this.setState({
       date: getDateFromStore(),
-      classroom: getClassroomFromStore(),
-      time: getValidtimeFromStore()
+      classroom: getValidClassroomFromStore(),
+      time: getTimeFromStore()
     });
   },
-  _getValidtime: function() {
+  _getValidClassRoom: function() {
     var time_id = {
-      date_id: this.refs.date_ref.getDOMNode().childNodes[0].value,
-      classroom_id: this.refs.classroom_ref.getDOMNode().childNodes[0].value
+      date_id: this.refs.date_ref.getValue(),
+      time_id: this.refs.time_ref.getValue()
     };
-    NeworderAction.getValidtime(time_id);
+    NeworderAction.getValidClassroom(time_id);
   },
-  handleShowValidtime: function() {
-    this._getValidtime();
+  handleShowValidClassRoom: function() {
+    this._getValidClassRoom();
   },
   handleSelectDate: function(e) {
     var date = e.target.value;
@@ -78,10 +78,11 @@ var Neworder = React.createClass({
   handleSubmit: function() {
     var $this = this;
     var data = {
-      date: this.refs.date_ref.getDOMNode().childNodes[0].selectedOptions[0].innerText,
-      classroom_id: this.refs.classroom_ref.getDOMNode().childNodes[0].value,
-      time_id: this.refs.time_ref.getDOMNode().childNodes[0].value,
-      reason: this.refs.reason_ref.getDOMNode().childNodes[1].value,
+      // date: this.refs.date_ref.getDOMNode().childNodes[0].selectedOptions[0].innerText,
+      date: this.state.date[this.refs.date_ref.getValue()].day,
+      classroom_id: this.refs.classroom_ref.getValue(),
+      time_id: this.refs.time_ref.getValue(),
+      reason: this.refs.reason_ref.getValue()
     };
     if(data.reason != '' && data.time_id != ''){
       swal({   title: "确定提交?",   
@@ -97,7 +98,7 @@ var Neworder = React.createClass({
             if (isConfirm) {     
               swal("提交成功!", "预定已提交，等待审核", "success");   
               NeworderAction.addOrder(data);
-              $this.refs.reason_ref.getDOMNode().childNodes[1].value = '';
+              $this.refs.reason_ref.value = '';
             } else {     
               swal("取消", "取消操作 :)", "error");   
             } 
@@ -126,20 +127,20 @@ var Neworder = React.createClass({
       <AMZ.Grid className="doc-g">
         <AMZ.Col sm={12} md={4} lg={4}>
           <label>选择日期:</label>
-          <AMZ.Input type="select" ref='date_ref' style={{width:"150px",margin:"15px"}} onChange={this.handleShowValidtime}>
+          <AMZ.Input type="select" ref='date_ref' style={{width:"150px",margin:"15px"}} onChange={this.handleShowValidClassRoom}>
             {DateList}
           </AMZ.Input>
         </AMZ.Col>
+				<AMZ.Col sm={12} md={4} lg={4}>
+					<label>选择时间:</label>
+					<AMZ.Input type="select" ref='time_ref' style={{width:"150px",margin:"15px"}} onChange={this.handleShowValidClassRoom}>
+						{TimeList}
+					</AMZ.Input>
+				</AMZ.Col>
         <AMZ.Col sm={12} md={4} lg={4}>
           <label>选择教室:</label>
-          <AMZ.Input type="select" ref='classroom_ref' style={{width:"150px",margin:"15px"}} onChange={this.handleShowValidtime}>
+          <AMZ.Input type="select" ref='classroom_ref' style={{width:"150px",margin:"15px"}}>
             {ClassRoomList}
-          </AMZ.Input>
-        </AMZ.Col>
-        <AMZ.Col sm={12} md={4} lg={4}>
-          <label>选择时间:</label>
-          <AMZ.Input type="select" ref='time_ref' style={{width:"150px",margin:"15px"}} >
-            {TimeList}
           </AMZ.Input>
         </AMZ.Col>
       </AMZ.Grid>
