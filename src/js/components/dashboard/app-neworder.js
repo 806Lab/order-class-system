@@ -75,11 +75,22 @@ var Neworder = React.createClass({
       time: time
     });
   },
+
+	//根据date_ref的value获取到日期
+	_getDayOfDate: function (value) {
+		for (var i = 0; i < this.state.date.length; i++){
+			var date = this.state.date[i];
+			if (date.id == value) {
+				return date.day;
+			}
+		}
+		return "";
+	},
+
   handleSubmit: function() {
     var $this = this;
     var data = {
-      // date: this.refs.date_ref.getDOMNode().childNodes[0].selectedOptions[0].innerText,
-      date: this.state.date[this.refs.date_ref.getValue()].day,
+      date: this._getDayOfDate(this.refs.date_ref.getValue()),
       classroom_id: this.refs.classroom_ref.getValue(),
       time_id: this.refs.time_ref.getValue(),
       reason: this.refs.reason_ref.getValue()
@@ -107,7 +118,6 @@ var Neworder = React.createClass({
           swal({title: "信息填写不完整",   text: "", confirmButtonColor: "#ff0000",   timer: 800 });
         }
   },
-  
    render: function() {
     var Times = this.state.time;
     var ClassRoom = this.state.classroom;

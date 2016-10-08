@@ -32,7 +32,7 @@
   },
   "scripts": {
     "watch": "gulp watch",
-    "deploy": "gulp deploy"
+    "min": "gulp min"
   },
   "author": "kevinwang",
   "license": "MIT"

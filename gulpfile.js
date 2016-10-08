@@ -14,7 +14,7 @@ gulp.task('build', function () {
 		.pipe(livereload());
 });
 
-gulp.task('deploy', function () {
+gulp.task('min', function () {
 	gulp.src('./backend/js/main.min.js')
 		.pipe(uglify())
 		.pipe(gulp.dest('./backend/js/'))
