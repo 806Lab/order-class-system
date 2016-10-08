@@ -16,6 +16,14 @@ class UserManagementAction {
 				}
 		})
 	}
+	
+	updateUser(data, f) {
+		
+	}
+	
+	deleteUser(data, f) {
+		
+	}
 }
 
 export default UserManagementAction;
