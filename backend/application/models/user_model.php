@@ -5,7 +5,7 @@ class User_Model extends CI_Model{
     const TAB_CLASSROOM = "classroom";
     const TAB_TIME = "time";
     const TAB_ARRANGEMENT = "arrangement";
-    
+
 
     /**
      * 获取基本信息
@@ -24,7 +24,7 @@ class User_Model extends CI_Model{
             "last_order_time" => $row->last_order_time
         );
     }
-    
+
     /**
      * 判断教室是否合法
      * @param $classroom_id
@@ -34,7 +34,7 @@ class User_Model extends CI_Model{
         $query = $this->db->get_where(self::TAB_CLASSROOM, array("id" => $classroom_id));
         return $query->num_rows() > 0;
     }
-    
+
     /**
      * 判断提交时间是否合法
      * @param $date
@@ -45,11 +45,10 @@ class User_Model extends CI_Model{
     function is_time_avalible($date ,$time_id, $classroom_id){
         $date_id = date("w", strtotime($date));
         $times = $this->get_time_by_date_id_and_classroom_id($date_id, $classroom_id);
-//        var_dump($times);die();
         foreach ($times as $time){
             if ($time->id == $time_id){
                 return true;
-            }  
+            }
         }
         return false;
     }
@@ -77,7 +76,7 @@ class User_Model extends CI_Model{
         );
         $this->db->insert(self::TAB_ORDER, $data);
     }
-    
+
 
     /**
      * 根据limit和offset获取订单
@@ -105,13 +104,13 @@ class User_Model extends CI_Model{
             }
             array_push($result, $temp_row);
         }
-        
+
         return array(
             "count" => $num_query ->num_rows(),
             "infos" => $result
         );
     }
-    
+
 
     /**
      * 根据id获取指定教室
@@ -122,7 +121,7 @@ class User_Model extends CI_Model{
         $query = $this->db->get_where(self::TAB_CLASSROOM, array('id' => $id));
         return $query->result();
     }
-    
+
 
     /**
      * 获取时间段
@@ -200,14 +199,14 @@ class User_Model extends CI_Model{
      * @return bool
      */
     function is_time_have_added($username, $date, $time_id, $classroom_id){
-        $query = $this->db->get_where(self::TAB_ORDER, array( 
+        $query = $this->db->get_where(self::TAB_ORDER, array(
             "date" => $date,
             "username" => $username,
             "time_id" => $time_id,
             "classroom_id" => $classroom_id,
             "status" => 0
         ));
-        
+
         $query2 = $this->db->get_where(self::TAB_ORDER, array(
             "date" => $date,
             "username" => $username,
@@ -215,7 +214,7 @@ class User_Model extends CI_Model{
             "classroom_id" => $classroom_id,
             "status" => 1
         ));
-        
+
         return ($query->num_rows() + $query2->num_rows()) > 0;
     }
 
@@ -228,7 +227,7 @@ class User_Model extends CI_Model{
         $query = $this->db->get_where(self::TAB_TIME, array('id' => $id));
         return $query->result();
     }
-    
+
 
     /**
      * 获取未处理或者未使用的教室数目，防止有人恶意提交订单
@@ -240,7 +239,7 @@ class User_Model extends CI_Model{
         $query2 = $this->db->get_where(self::TAB_ORDER, array("username" => $username, "status" => 1));
         return $query1->num_rows() + $query2->num_rows();
     }
-    
+
     /**
      * 判断order是否可以取消
      * @param int $id
@@ -249,14 +248,14 @@ class User_Model extends CI_Model{
      */
     function is_order_valid_cancel($id, $username){
         $row = $this->db->get_where(self::TAB_ORDER, array('id' => $id))->row();
-        
+
         //如果此订单未被处理，并且是该用户的
         if (($row->status == 0) && ($row->username == $username)){
             return true;
         }
         return false;
     }
-    
+
     /**
      * 删除一条order
      * @param int $id
@@ -265,7 +264,7 @@ class User_Model extends CI_Model{
         $this->db->where('id', $id);
         $this->db->delete(self::TAB_ORDER);
     }
-    
+
     /**
      * 获取从今天起往后的7天的日期
      */
@@ -279,5 +278,5 @@ class User_Model extends CI_Model{
         }
         return $res;
     }
-    
+
 }

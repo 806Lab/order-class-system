@@ -7,43 +7,39 @@ class Admin_Model extends CI_Model{
     const TAB_CLASSROOM = "classroom";
     const TAB_ARRANGEMENT = "arrangement";
     const TAB_GUID = "guid";
-    const TAB_PRE_ARRANGEMENT = "pre_arrangement";
-     
+
 
     /**
      * 根据用户名获取用户信息
      * @param $username
      * @return mixed
      */
-    function get_userinfo_by_username($username)
-    {
+    function get_userinfo_by_username($username){
         return $this->db->get_where(self::TAB_USER, array("username" => $username)) -> row();
     }
-    
+
 
     /**
      * 获取时间段信息
      * @param $id
      * @return mixed
      */
-    function get_time_by_id($id)
-    {
+    function get_time_by_id($id){
         $query = $this->db->get_where(self::TAB_TIME, array('id' => $id));
         return $query->row();
     }
-    
+
 
     /**
      * 获取教室
      * @param $id
      * @return mixed
      */
-    function get_classroom_by_id($id)
-    {
+    function get_classroom_by_id($id){
         $query = $this->db->get_where(self::TAB_CLASSROOM, array('id' => $id));
         return $query->row();
     }
-    
+
 
     /**
      * 获取订单
@@ -52,11 +48,10 @@ class Admin_Model extends CI_Model{
      * @param $limit
      * @return array
      */
-    function get_order($is_operated, $offset, $limit)
-    {
+    function get_order($is_operated, $offset, $limit){
         $status_query = "status";
         if ($is_operated != 0) {
-            $status_query .= " !="; 
+            $status_query .= " !=";
         }
         $this->db->order_by("commit_time", "desc");
         $this->db->where(array($status_query => 0));
@@ -76,52 +71,48 @@ class Admin_Model extends CI_Model{
             "infos" => $res
         );
     }
-    
+
 
     /**
      * 通过id获取order
      * @param $order_id
      * @return mixed
      */
-    function get_order_by_id($order_id)
-    {
-        $query = $this->db->get_where(self::TAB_ORDER, array("id" => $order_id));    
+    function get_order_by_id($order_id){
+        $query = $this->db->get_where(self::TAB_ORDER, array("id" => $order_id));
         return $query->row();
     }
-    
+
     /**
      * 判断order是否存在
      * @param int $order_id
      * @return boolean
      */
-    function is_order_exist($order_id)
-    {
+    function is_order_exist($order_id){
         $this->db->where(array("id" => $order_id));
         if ($this->db->get(self::TAB_ORDER)->num_rows() > 0){
             return true;
         }
         return false;
     }
-    
+
     /**
      * 判断order是否未处理
      * @param int $order_id
      * @return boolean
      */
-    function is_order_unhandled($order_id)
-    {
+    function is_order_unhandled($order_id){
         $this->db->where(array("id" => $order_id));
         return $this->db->get(self::TAB_ORDER)->row()->status == 0;
     }
-    
+
     /**
      * 更新order的status和feedback
      * @param int $order_id
      * @param int $status
      * @param string $feedback
      */
-    function update_order($order_id, $status, $feedback)
-    {
+    function update_order($order_id, $status, $feedback){
         if ($feedback === FALSE){
             $feedback = '';
         }
@@ -138,18 +129,17 @@ class Admin_Model extends CI_Model{
         $this->db->where(array("id" => $order_id));
         $this->db->update(self::TAB_ORDER, $data);
     }
-    
+
     /**
      * 生成验证二维码
      * @param int $order_id
      * @return string
      */
-    function generate_qrcode($order_id)
-    {
+    function generate_qrcode($order_id){
         $this->load->helper("qrcode");
         $this->load->helper("guid");
         $guid = create_guid();
-        $guid_pngname = create_guid().".png"; 
+        $guid_pngname = create_guid().".png";
         $filepath = dirname(dirname(__DIR__))."/qrcode/".$guid_pngname;
         QRcode::png($guid, $filepath, QR_ECLEVEL_L, $size = 12);
         $data = array(
@@ -159,14 +149,13 @@ class Admin_Model extends CI_Model{
         $this->db->insert(self::TAB_GUID, $data);
         return $guid_pngname;
     }
-    
+
     /**
      * 获取安排
      * @param int $date_id
      * @return array
      */
-    function  get_arrangement($date_id)
-    {
+    function  get_arrangement($date_id){
         $rooms = $this->db->get(self::TAB_CLASSROOM)->result();
         $times = $this->db->get(self::TAB_TIME)->result();
         $res = array();
@@ -180,7 +169,7 @@ class Admin_Model extends CI_Model{
                     "time_id" => $time->id,
                     "classroom_id" => $room->id
                 ));
-                
+
                 if ($query->num_rows() > 0){
                     array_push($temp_room->time_infos, array(
                         "time" => $time,
@@ -193,7 +182,7 @@ class Admin_Model extends CI_Model{
         }
         return $res;
     }
-    
+
     /**
      * 判断安排是否存在
      * @param int $date_id
@@ -201,8 +190,7 @@ class Admin_Model extends CI_Model{
      * @param int $time_id
      * @return boolean
      */
-    function is_arrangement_exist($date_id, $classroom_id, $time_id)
-    {
+    function is_arrangement_exist($date_id, $classroom_id, $time_id){
         $this->db->where(array(
             "date_id" => $date_id,
             "classroom_id" => $classroom_id,
@@ -214,7 +202,7 @@ class Admin_Model extends CI_Model{
         }
         return false;
     }
-    
+
     /**
      * 添加一个安排
      * @param int $date_id
@@ -224,8 +212,7 @@ class Admin_Model extends CI_Model{
      * @param int $type
      * @return boolean
      */
-    function  add_arrangement($date_id, $classroom_id, $time_id, $content, $type)
-    {
+    function  add_arrangement($date_id, $classroom_id, $time_id, $content, $type){
         if ($this->is_arrangement_exist($date_id, $classroom_id, $time_id)){
             return false;
         }
@@ -240,7 +227,7 @@ class Admin_Model extends CI_Model{
         $this->db->insert(self::TAB_ARRANGEMENT, $data);
         return true;
     }
-    
+
     /**
      * 删除一个安排
      * @param int $date_id
@@ -248,8 +235,7 @@ class Admin_Model extends CI_Model{
      * @param int $time_id
      * @return boolean
      */
-    function  delete_arrangement($date_id, $classroom_id, $time_id)
-    {
+    function  delete_arrangement($date_id, $classroom_id, $time_id){
         if (!$this->is_arrangement_exist($date_id, $classroom_id, $time_id)){
             return false;
         }
@@ -263,18 +249,15 @@ class Admin_Model extends CI_Model{
     }
 
     /**
-     * 更换安排
-     * @param $date_id
-     * @param $classroom_id
-     * @param $time_id
-     * @param $content
-     * @param $type
-     * @param $end_date
-     * @return bool
+     * 更新安排
+     * @param int $date_id
+     * @param int $classroom_id
+     * @param int $time_id
+     * @param string $content
+     * @param int $type
+     * @return boolean
      */
-    function  update_arrangement($date_id, $classroom_id,
-                                 $time_id, $content, $type, $end_date)
-    {
+    function  update_arrangement($date_id, $classroom_id, $time_id, $content, $type){
         if (!$this->is_arrangement_exist($date_id, $classroom_id, $time_id)){
             return false;
         }
@@ -285,72 +268,9 @@ class Admin_Model extends CI_Model{
         ));
         $data = array(
             'content' => $content,
-            'type' => $type,
-            'end_date' => $end_date
+            'type' => $type
         );
         $this->db->update(self::TAB_ARRANGEMENT, $data);
         return true;
     }
-    
-
-    /**
-     * 删除一个安排
-     * @param $id
-     * @return bool
-     */
-    function  delete_pre_arrangement($id)
-    {
-        $this->db->where(array("id" => $id));
-        $this->db->delete(self::TAB_ARRANGEMENT);
-        return true;
-    }
-
-
-    /**
-     * 获取预先安排的总数
-     * @return mixed
-     */
-    function get_pre_arrangement_count()
-    {
-        return $this->db->get(self::TAB_PRE_ARRANGEMENT)->num_rows();
-    }
-
-
-    /**
-     * 获取预先安排
-     * @param $limit
-     * @param $offset
-     * @return mixed
-     */
-    function get_pre_arrangement($limit, $offset)
-    {
-        $this->db->limit($limit, $offset);
-        $arrangements = $this->db->get(self::TAB_PRE_ARRANGEMENT)->result();
-        $res = array();
-        foreach ($arrangements as $arrangement){
-            $temp_arrangement = $arrangement;
-            $temp_arrangement->date = $this->db->get_where(self::TAB_DATE,
-                array("id" => $arrangement->date_id))->row();
-            $temp_arrangement->classroom = $this->db->get_where(self::TAB_CLASSROOM,
-                array("id" => $arrangement->classroom_id))->row();
-            $temp_arrangement->time = $this->db->get_where(self::TAB_TIME,
-                array("id" => $arrangement->time_id))->row();
-            array_push($res, $temp_arrangement);
-        }
-        return $res;
-    }
-
-
-    function add_pre_arrangement()
-    {
-
-    }
-
-    function update_pre_arrangement()
-    {
-
-    }
-    
-
-    
 }
