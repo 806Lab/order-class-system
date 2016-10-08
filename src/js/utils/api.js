@@ -90,6 +90,7 @@ var Api = {
         );
     },
     ajaxPost: function(url,data,cb) {
+				$('#loading').css('display','block');
         $.ajax({
             url: url,
             dataType: 'JSON',
@@ -102,7 +103,7 @@ var Api = {
                     cb(data);
                 },
             complete: function(XMLHttpRequest, textStatus){
-                
+							$('#loading').css('display', 'none');
             },
             error:function(e) {
                 console.log(e);
