@@ -45,6 +45,7 @@ class User_Model extends CI_Model{
     function is_time_avalible($date ,$time_id, $classroom_id){
         $date_id = date("w", strtotime($date));
         $times = $this->get_time_by_date_id_and_classroom_id($date_id, $classroom_id);
+//        var_dump($times);die();
         foreach ($times as $time){
             if ($time->id == $time_id){
                 return true;

@@ -7,7 +7,6 @@
 var AppConstants = require('../constants/app-constants');
 var AppDispatcher = require('../dispatchers/app-dispatcher');
 
-var $ = require('jquery');
 var Api = require('../utils/api.js');
 
 
@@ -28,7 +27,7 @@ var ManageAction = {
                 location.pathname = "/";
             } else if (data.code == 0) {
                 AppDispatcher.handleViewAction({'actionType': AppConstants.GET_ADMIN_NEW_ORDER,'data':data.data.infos})
-            };
+            }
         })
     },
     /**
@@ -43,9 +42,9 @@ var ManageAction = {
             } else if (data.code == 0) {
                 AppDispatcher.handleViewAction({'actionType': AppConstants.HANDLE_ORDER,'data':data.data.infos})
                 ManageAction.getOrder(0,0);
-            };
+            }
         })
     }
-}
+};
 
 module.exports = ManageAction;

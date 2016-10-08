@@ -50,7 +50,7 @@ var Template =
               <div className="container">
                     <AdminHeader />
                     {this.props.children}
-                   <Footer marginTop={"0px"} />
+                   <Footer marginTop={"20px"} />
               </div>
               )
           } else {

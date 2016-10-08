@@ -48,7 +48,6 @@ class User extends CI_Controller {
         $this->common_model->check_out_args($date_id, $time_id);
         $this->response_model->show(0, 'success', $this->user_model->get_classroom($date_id, $time_id));
     }
-    
 
     
     /**
@@ -71,12 +70,13 @@ class User extends CI_Controller {
     function add_order(){
         $username = $this->session->userdata('username');
         if ($this->user_model->get_unhandled_or_unused_order_num($username) > 2){
-            $this->response_model->show(1, "你处于待审核或者已通过未使用的二维码已经超过两条，请等待管理员审核，或者马上使用二维码。");die();
+            $this->response_model->show(1, "你处于待审核或者已通过未使用的二维码已经超过两条，将无法借教师。可以找机电楼一楼阿姨扫码来消费掉二维码。");die();
         }
         $date = $this->input->get_post('date', TRUE);
         $time_id = $this->input->get_post('time_id', TRUE);
         $classroom_id = $this->input->get_post('classroom_id', TRUE);
         $reason = $this->input->get_post('reason', TRUE);
+
         $this->common_model->check_out_args($date, $time_id, $classroom_id, $reason);
         
         //判断同一时间段同一用户的请求是否重复添加
@@ -94,7 +94,7 @@ class User extends CI_Controller {
             $this->response_model->show(2, "教室ID不合法");die();
         }
         
-        //判断教室是否合法
+        //判断时间是否合法
         if (!$this->user_model-> is_time_avalible($date, $time_id, $classroom_id)){
             $this->response_model->show(2, "指定时间段不存在");die();
         }

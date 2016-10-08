@@ -7,9 +7,6 @@
 var AppConstants = require('../constants/app-constants');
 var AppDispatcher = require('../dispatchers/app-dispatcher');
 
-var $ = require('jquery');
-
-
 var API_URL = '/assets/api.json';
 var TIMEOUT = 10000;
 

@@ -140,39 +140,82 @@ class Admin extends CI_Controller {
     /**
      * 获取用户列表
      */
-    function get_user_list(){
+    function search_users() {
         $offset = $this->input->get_post("offset", TRUE);
+        $search_type = $this->input->get_post("search_type", TRUE);
+        $search_content = $this->input->get_post("search_content", TRUE);
+        $this->common_model->check_out_args($offset, $search_content, $search_type);
+
+        $username = null;
+        $name = null;
+        $unit_info = null;
+        if ($search_type == '1') {          //按照学号搜索
+            $username = $search_content;
+        } elseif ($search_type == '2') {    //按照姓名搜索
+            $name = $search_content;
+        } elseif ($search_type == '3') {    //按照单位来搜索
+            $unit_info = $search_content;
+        }                                   // seach_type = 0 为默认查找
         $limit = 10;
         $data = [
-            "users" => $this->usermanage_model->get_user_list($offset, $limit),
-            "count" => $this->usermanage_model->get_user_count()
+            "users" => $this->usermanage_model->search_users($username, $name, $unit_info, $offset, $limit),
+            "count" => $this->usermanage_model->search_users_count($username, $name, $unit_info)
         ];
         $this->response_model->show(0, "", $data);
     }
-
+    
     /**
      * 添加新用户
      */
     function add_user(){
+        $username = $this->input->get_post("username", TRUE);
+        $name = $this->input->get_post("name", TRUE);
+        $unit_info = $this->input->get_post("unit_info", TRUE);
+        $mobile_number = $this->input->get_post("mobile_number", TRUE);
+        $user_type = $this->input->get_post("user_type", TRUE);
+        $this->common_model->check_out_args($username, $name, $unit_info, $mobile_number, $user_type);
 
+        if ($this->usermanage_model->is_user_exist($username)){
+            $this->response_model->show_error("用户已存在,无法重复添加");die();
+        }
+        $this->usermanage_model->add_user($username, $name, $unit_info, $mobile_number, $user_type);
+        $this->response_model->show_success("添加成功");
     }
 
     /**
      * 删除用户
      */
     function delete_user(){
-        
+        $username = $this->input->get_post("username", TRUE);
+        $this->common_model->check_out_args($username);
+
+        if (!$this->usermanage_model->is_user_exist($username)){
+            $this->response_model->show_error("用户不存在,无法删除");die();
+        }
+        $this->usermanage_model->delete_user($username);
+        $this->response_model->show_success("删除成功");
     }
 
     /**
      * 更新用户
      */
     function update_user(){
-        
+        $username = $this->input->get_post("username", TRUE);
+        $name = $this->input->get_post("name", TRUE);
+        $unit_info = $this->input->get_post("unit_info", TRUE);
+        $mobile_number = $this->input->get_post("mobile_number", TRUE);
+        $user_type = $this->input->get_post("user_type", TRUE);
+        $this->common_model->check_out_args($username, $name, $unit_info, $mobile_number, $user_type);
+
+        if (!$this->usermanage_model->is_user_exist($username)){
+            $this->response_model->show_error("用户不存在,无法更新");die();
+        }
+        $this->usermanage_model->update_user($username, $name, $unit_info, $mobile_number, $user_type);
+        $this->response_model->show_success("更新成功");
     }
 
     /**
-     * 更新管理员密码
+     * 更新管理员密码, (目前不开发了)
      */
     function update_passwd(){
 

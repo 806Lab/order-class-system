@@ -7,7 +7,10 @@
  */
 
 
-
+/**
+ * 上传表格更新数据(目前不开发了)
+ * Class XLSX_Model
+ */
 class XLSX_Model extends CI_Model{
 
     const TAB_PRE_ARRANGEMENT = "pre_arrangement";

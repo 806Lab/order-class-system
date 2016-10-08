@@ -129,7 +129,7 @@ var About = React.createClass({
           <td><button className="btn-success" onClick={handleAgree.bind(this,item.id)}>同意</button><button className="btn-warning" onClick={handleRefuse.bind(this,item.id)}>拒绝</button></td></tr>
         }else{
           return <tr key={i}><td>{item.date}</td><td>{item.time}</td><td>{item.classroom}</td><td>{item.reason}</td>
-          <td>{item.user.name}</td><td>{item.user.unit_info}</td>
+          <td>{item.user.name}</td><td>{item.user.mobile_number}</td><td>{item.user.unit_info}</td>
           <td className={textColor}>{status}<button type="" className="show-qrcode btn-info" onClick={handleShowFeedback.bind(this,item.feedback)}>查看反馈</button>
           </td></tr>
         }
@@ -162,6 +162,7 @@ var About = React.createClass({
                 <th>教室<span className="glyphicon glyphicon-eject" style={{cursor:"pointer",marginLeft:"5px"}} onClick={this.handleSort.bind(this,'classroom')}></span></th>
                 <th>原因</th>
                 <th>申请人</th>
+								<th>手机号</th>
                 <th>单位</th>
                 <th>操作<span className="glyphicon glyphicon-eject" style={{cursor:"pointer",marginLeft:"5px"}} onClick={this.handleSort.bind(this,'status')}></span></th></tr>
               </thead>

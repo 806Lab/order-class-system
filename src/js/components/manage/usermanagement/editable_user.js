@@ -3,7 +3,9 @@
  */
 import { Button, Modal } from 'react-bootstrap'
 import React from 'react'
+import UserManagementAction from '../../../actions/usermanagement-action'
 
+const action = new UserManagementAction();
 
 class EditableUser extends React.Component{
 
@@ -34,23 +36,30 @@ class EditableUser extends React.Component{
 	}
 
 	confirmDeleteModal(){
-		this.setState({isDelete: true});
-	}
-
-	confirmUpdateModal(){
-		let newData = {
-			username: this.refs.username.value,
-			name: this.refs.name.value,
-			unit_info: this.refs.unit_info.value,
-			mobile_number: this.refs.mobile_number.value,
-			user_type: this.refs.user_type.value,
-		};
-		this.setState({
-			data: newData,
-			showUpdateModal: false
+		let that = this;
+		action.deleteUser({username: this.state.data.username}, ()=>{
+			that.setState({isDelete: true});
 		});
 	}
 
+	confirmUpdateModal(){
+		let that = this;
+		let newData = {
+			username: this.state.data.username,
+			name: this.refs.name.value,
+			unit_info: this.refs.unit_info.value,
+			mobile_number: this.refs.mobile_number.value,
+			user_type: this.refs.user_type.value
+		};
+		action.updateUser(newData, ()=>{
+			that.setState({
+				data: newData,
+				showUpdateModal: false
+			});
+		});
+		
+	}
+	
 	getUserType(user_type) {
 		switch (user_type){
 			case "0": return "本科生";
@@ -91,8 +100,7 @@ class EditableUser extends React.Component{
 						</Modal.Header>
 						<Modal.Body>
 							<div className="form-group">
-								<label className="form-label">学号(工号)</label>
-								<input type="text" ref='username' className="form-control" defaultValue={this.state.data.username} />
+								<label className="form-label">学号(工号): {this.state.data.username}</label>
 							</div>
 							<div className="form-group">
 								<label className="form-label">姓名</label>
