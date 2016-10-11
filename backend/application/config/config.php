@@ -14,7 +14,7 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://localhost/ustb_class_order';
+$config['base_url']	= 'http://scce.kalen.site';
 
 /*
 |--------------------------------------------------------------------------
