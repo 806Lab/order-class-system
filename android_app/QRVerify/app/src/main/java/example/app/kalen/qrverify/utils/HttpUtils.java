@@ -12,8 +12,8 @@ import org.apache.http.util.EntityUtils;
  */
 
 public class HttpUtils {
-    private static final String GET_INFO_URL_STRING = "http://scce.kalen.site/api.php/verify/get_qrcode_info";
-    private static final String COMMIT_REQUEST_URL_STRING = "http://scce.kalen.site/api.php/verify/nxnjznjxnsaxiahiueiqiojw";
+    private static final String GET_INFO_URL_STRING = "http://ccs.nladuo.tech/api.php/verify/get_qrcode_info";
+    private static final String COMMIT_REQUEST_URL_STRING = "http://ccs.nladuo.tech/api.php/verify/nxnjznjxnsaxiahiueiqiojw";
 
     public static String getInfo(String guid) throws Exception{
         HttpContext context = new BasicHttpContext();
