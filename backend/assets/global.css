@@ -102,3 +102,14 @@ th{
 	vertical-align: middle;
 	}
 }
+
+.top-btn {
+	float:right;
+	margin-right:10px;
+	margin-bottom: 3px;
+}
+
+.top-buttons-div{
+	width: 100%;
+	padding: 5px;
+}

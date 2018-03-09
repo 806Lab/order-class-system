@@ -89,7 +89,7 @@ var Api = {
             makeDigestFun(key, params)
         );
     },
-    ajaxPost: function(url,data,cb) {
+    ajaxPost: function(url, data, cb) {
 				$('#loading').css('display','block');
         $.ajax({
             url: url,

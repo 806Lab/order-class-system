@@ -50,7 +50,7 @@ class Admin extends CI_Controller {
         }
 
         // 处理请求
-        if ($status == 1){ // if tatus =1, add order to arrangement
+        if ($status == 1){ // if status =1, add order to arrangement
             // handle the order when adding the arrangement
             $order = $this->admin_model->get_order_by_id($order_id);//获取order
             $date_id = $order->date_id;
@@ -207,5 +207,86 @@ class Admin extends CI_Controller {
         }
         $this->usermanage_model->update_user($username, $name, $unit_info, $mobile_number, $user_type);
         $this->response_model->show_success("更新成功");
+    }
+
+    /**
+     * 接受多个订单
+     */
+    function accept_multi_orders() {
+        $selected = $this->input->get_post('selected', true);
+        $selected = json_decode($selected, true);
+        $order_ids = [];
+        if (is_array($selected)) {
+            foreach ($selected as $key => $val) {
+                if ($val == true) {
+                    if ($this->admin_model->is_order_exist($key)
+                        && $this->admin_model->is_order_unhandled($key)) { //判断订单是否存在，并且未处理
+                        array_push($order_ids, $key);
+                    } else {
+                        $this->response_model->show_error("order不存在或已处理，非法请求");die();
+                    }
+                }
+            }
+        } else{
+            $this->response_model->show_error("参数错误");
+        }
+
+        foreach ($order_ids as $order_id) {
+            $order = $this->admin_model->get_order_by_id($order_id);//获取order
+            $date_id = $order->date_id;
+            $classroom_id = $order->classroom_id;
+            $time_id = $order->time_id;
+            $user = $this->admin_model->get_userinfo_by_username($order->username);//获取申请人用户信息
+
+            //判断安排是否存在
+            if($this->admin_model->is_arrangement_exist($date_id, $classroom_id, $time_id)) {
+                $this->response_model->show(1, "某个订单安排冲突，请删除安排后再添加");die();
+            }
+
+            $theUserName =$user ->name;
+            $theUserUnitInfo = $user->unit_info;
+            $content = $theUserName. "（".$theUserUnitInfo."）（".$order->reason."）";
+
+            $this->admin_model->add_arrangement($date_id, $classroom_id, $time_id, $content, 0);
+
+            $this->admin_model->update_order($order_id, 1, "");
+        }
+        $this->response_model->show_success();
+    }
+
+    /**
+     * 拒绝多个订单
+     */
+    function reject_multi_orders() {
+        $selected = $this->input->get_post('selected', true);
+        $selected = json_decode($selected, true);
+        $order_ids = [];
+        if (is_array($selected)) {
+            foreach ($selected as $key => $val) {
+                if ($val == true) {
+                    if ($this->admin_model->is_order_exist($key)
+                        && $this->admin_model->is_order_unhandled($key)) { //判断订单是否存在，并且未处理
+                        array_push($order_ids, $key);
+                    } else {
+                        $this->response_model->show_error("order不存在或已处理，非法请求");die();
+                    }
+                }
+            }
+        } else{
+            $this->response_model->show_error("参数错误");die();
+        }
+
+        foreach ($order_ids as $order_id) {
+            $this->admin_model->update_order($order_id, 2, "");
+        }
+        $this->response_model->show_success();
+    }
+
+    /**
+     * 清空过期订单
+     */
+    function clean_outdated_orders() {
+        $count = $this->admin_model->clean_outdated_orders();
+        $this->response_model->show_success("共删除了".$count."条过期订单");
     }
 }

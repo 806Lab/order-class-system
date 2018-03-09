@@ -273,4 +273,24 @@ class Admin_Model extends CI_Model{
         $this->db->update(self::TAB_ARRANGEMENT, $data);
         return true;
     }
+
+
+    function clean_outdated_orders() {
+        $data = $this->get_order(0, 0, 1000); //获取未处理的订单
+        $orders = $data["infos"];
+
+        $now = strtotime(date("Y-m-d"));
+
+        $count = 0;
+
+        foreach ($orders as $order) {
+            $t = strtotime($order->date);
+            if ($t < $now) {
+                $this->db->where(array("id"=>$order->id));
+                $this->db->delete(self::TAB_ORDER);
+                $count++;
+            }
+        }
+        return $count;
+    }
 }
