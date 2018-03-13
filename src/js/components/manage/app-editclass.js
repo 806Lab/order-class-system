@@ -108,6 +108,7 @@ var EditClass = React.createClass({
       }
     }
     function handleAdd(time_id,classroom_id) {
+      console.log(time_id,classroom_id)
       var feed = window.prompt("输入用途");
       var data = {
         time_id: time_id,
@@ -122,6 +123,25 @@ var EditClass = React.createClass({
         swal({title: '安排内容不能为空',   text: "", confirmButtonColor: "#ff0000",   timer: 800 });
       }
     }
+
+
+    function alldayAdd(classroom_id) {
+      console.log(classroom_id);
+      var feed = window.prompt("输入用途");
+      var data = {
+        classroom_id: classroom_id,
+        date_id: Date_id,
+        content: feed,
+        type: 0
+      };
+      if(feed) {
+        EditClassAction.alldayAddArrange(data);
+      } else {
+        swal({title: '安排内容不能为空',   text: "", confirmButtonColor: "#ff0000",   timer: 800 });
+      }
+    }
+
+
     function handleEdit(time_id,classroom_id) {
       var feed = window.prompt("输入用途");
       var data = {
@@ -161,6 +181,31 @@ var EditClass = React.createClass({
             }
           });
     }
+
+    function alldayDelete(classroom_id) {
+      var data = {
+        classroom_id: classroom_id,
+        date_id: Date_id
+      };
+      swal({   title: "确定删除?",
+            text: "你将要删除此条课程安排!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "确认删除",
+            cancelButtonText: "不，我点错了!",
+            closeOnConfirm: false,
+            closeOnCancel: false },
+          function(isConfirm){
+            if (isConfirm) {
+              swal("删除成功!", "课程安排已删除.", "success");
+              EditClassAction.alldayDeleteArrange(data);
+            } else {
+              swal("取消", "取消操作 :)", "error");
+            }
+          });
+    }
+    var alldayArrangeList = timetable.map(function(item, i) {return  <td><button className="handle-add btn-info btn" onClick={alldayAdd.bind(this,i+1)}>整日安排</button> <button className="handle-delete btn btn-danger" onClick={alldayDelete.bind(this,i+1)}>整日删除</button></td>});
     var ArrangeList0 = timetable.map(function(item, i) {return  <td>{item[0] == 0? <div><h4>没有安排</h4><button className="handle-add btn-success btn" onClick={handleAdd.bind(this,1,i+1)}>添加安排</button></div>: <div><h4>{item[0]}</h4><button className="handle-edit btn-warning btn" onClick={handleEdit.bind(this,1,i+1)}>编辑</button><button className="handle-delete btn btn-danger" onClick={handleDelete.bind(this,1,i+1)}>删除</button></div>}</td>});
     var ArrangeList1 = timetable.map(function(item, i) {return  <td>{item[1] == 0? <div><h4>没有安排</h4><button className="handle-add btn-success btn" onClick={handleAdd.bind(this,2,i+1)}>添加安排</button></div>: <div><h4>{item[1]}</h4><button className="handle-edit btn-warning btn" onClick={handleEdit.bind(this,2,i+1)}>编辑</button><button className="handle-delete btn btn-danger" onClick={handleDelete.bind(this,2,i+1)}>删除</button></div>}</td>});
     var ArrangeList2 = timetable.map(function(item, i) {return  <td>{item[2] == 0 || item[2] == ' '? <div><h4>没有安排</h4><button className="handle-add btn-success btn" onClick={handleAdd.bind(this,3,i+1)}>添加安排</button></div>: <div><h4>{item[2]}</h4><button className="handle-edit btn-warning btn" onClick={handleEdit.bind(this,3,i+1)}>编辑</button><button className="handle-delete btn btn-danger" onClick={handleDelete.bind(this,3,i+1)}>删除</button></div>}</td>});
@@ -173,9 +218,10 @@ var EditClass = React.createClass({
 
         <div className="timetable" style={{fontFamily:"'Helvetica Neue', Arial"}}>
           <label>选择日期:</label>
-          <AMZ.Input type="select" ref='date_ref' style={{width:"150px",margin:"15px"}} onChange={this.handleGetArrangement}>
+          <AMZ.Input type="select" ref='date_ref' style={{width:"150px",margin:"15px" ,display:'inline-block'}} onChange={this.handleGetArrangement}>
             {DateList}
           </AMZ.Input>
+
           <label>星期:</label>
           <span style={{color:"green",marginLeft:"10px"}}>{weekinfo}</span>
           <table className="table table-striped table-hover text-center table-bordered">
@@ -183,6 +229,7 @@ var EditClass = React.createClass({
             <tr><th>时间段</th>{RoomHead}</tr>
             </thead>
             <tbody>
+            <tr><td><h3 style={{marginTop:"30px"}}>整日安排</h3></td>{alldayArrangeList}</tr>            
             <tr><td><h3 style={{marginTop:"30px"}}>8:00 - 9:35</h3></td>{ArrangeList0}</tr>
             <tr><td><h3 style={{marginTop:"30px"}}>9:55 - 11:30</h3></td>{ArrangeList1}</tr>
             <tr><td><h3 style={{marginTop:"30px"}}>13:30 - 15:05</h3></td>{ArrangeList2}</tr>

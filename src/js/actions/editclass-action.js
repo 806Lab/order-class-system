@@ -65,6 +65,28 @@ var EditClass = {
         })
     },
     /**
+     * 整日安排操作
+     * @param {[object]} data [包含日期，教室号]
+     */
+    alldayAddArrange: function(data) {
+        for(var i = 1 ; i < 8 ; i++){
+            data.time_id = i;
+            console.log(data)
+            this.addArrange(data)
+        }
+    },
+    /**
+     * 整日删除操作
+     * @param {[object]} data [包含日期，教室号]
+     */
+    alldayDeleteArrange: function(data) {
+        for(var i = 1 ; i < 8 ; i++){
+            data.time_id = i;
+            console.log(data)
+            this.deleteArrange(data)
+        }
+    },
+    /**
      * 更新安排
      * @param  {[object]} data [更新的日期，时间段，教室号]
      * @return {[type]}      [description]

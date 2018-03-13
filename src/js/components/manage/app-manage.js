@@ -51,7 +51,7 @@ var About = React.createClass({
         }
         /// a must be equal to b
         return 0;
-      })
+      });
     this.setState({
       neworderList: neworder
     })
@@ -143,7 +143,6 @@ var About = React.createClass({
 						that.state.selected = {};
           }, 200); 
         });
-        
       }
       function handleRefuse(e, i) {
         var feed = window.prompt("拒绝理由（可不填)");
@@ -232,7 +231,7 @@ var About = React.createClass({
             <table className="table table-striped table-hover text-center">
               <thead>
                 <tr>
-									<th> </th>
+									<th></th>
 									<th>日期<span className="glyphicon glyphicon-eject" style={{cursor:"pointer",marginLeft:"5px"}} onClick={this.handleSort.bind(this,'date')}></span></th>
 									<th>时间<span className="glyphicon glyphicon-eject" style={{cursor:"pointer",marginLeft:"5px"}} onClick={this.handleSort.bind(this,'time')}></span></th>
 									<th>教室<span className="glyphicon glyphicon-eject" style={{cursor:"pointer",marginLeft:"5px"}} onClick={this.handleSort.bind(this,'classroom')}></span></th>

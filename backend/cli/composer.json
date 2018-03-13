@@ -1,0 +1,6 @@
+{
+    "require": {
+        "joshcam/mysqli-database-class": "dev-master",
+        "phpoffice/phpexcel": "^1.8"
+    }
+}

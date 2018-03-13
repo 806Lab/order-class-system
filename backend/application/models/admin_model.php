@@ -222,7 +222,8 @@ class Admin_Model extends CI_Model{
             'classroom_id' =>$classroom_id,
             'time_id' => $time_id,
             'content' => $content,
-            'type' => $type
+            'type' => $type,
+            'end_date' => $this->get_date_by_id($date_id)
         );
         $this->db->insert(self::TAB_ARRANGEMENT, $data);
         return true;
@@ -276,15 +277,26 @@ class Admin_Model extends CI_Model{
 
 
     function clean_outdated_orders() {
+        $times = [
+            " 0:00",
+            " 8:00",
+            " 9:55",
+            " 13:30",
+            " 15:20",
+            " 17:10",
+            " 19:30",
+            " 21:30"
+        ];
+
         $data = $this->get_order(0, 0, 1000); //获取未处理的订单
         $orders = $data["infos"];
 
-        $now = strtotime(date("Y-m-d"));
+        $now = strtotime("now");
 
         $count = 0;
 
         foreach ($orders as $order) {
-            $t = strtotime($order->date);
+            $t = strtotime($order->date.$times[$order->time_id]);
             if ($t < $now) {
                 $this->db->where(array("id"=>$order->id));
                 $this->db->delete(self::TAB_ORDER);
@@ -292,5 +304,17 @@ class Admin_Model extends CI_Model{
             }
         }
         return $count;
+    }
+
+    function get_date_by_id($id){
+        $tody_id = date("w");
+        for ($i = 0; $i < 7; $i++){
+            $day_id = ($tody_id + $i) % 7;
+            $day = date("Y-m-d",strtotime("+".$i." day"));
+            if ($id == $day_id) {
+                return $day;
+            }
+        }
+        return "";
     }
 }
